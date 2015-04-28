@@ -18,7 +18,7 @@ public class TCPServer {
 		
 		//Connection establishment phase
 		ServerSocket ss = new ServerSocket(12000);
-		System.out.println("Waiting for server\n\n");
+		System.out.println("Waiting for client\n\n");
 		Socket soc = ss.accept();
 		
 		//Data transfer phase
@@ -30,7 +30,7 @@ public class TCPServer {
 		
 		inp = i.readUTF(); //readUTF läster in i Unicode Text Format
 		
-		FileInputStream fin = new FileInputStream("F:/" + inp);
+		FileInputStream fin = new FileInputStream("/Users/emilyelmseld/Documents/fil-lista/" + inp);
 		while((c = fin.read())!= -1)
 		{
 			o.write(c);
@@ -41,7 +41,7 @@ public class TCPServer {
 	
 	public static void getFilelist(DataInputStream din, DataOutputStream dout) throws IOException {
 		int p = 0;
-		File folder = new File("F:/");
+		File folder = new File("/Users/emilyelmseld/Documents/fil-lista/");
 		File[] listOfFiles = folder.listFiles();
 		for(File listOfFile : listOfFiles)
 			
