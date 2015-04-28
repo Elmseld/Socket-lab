@@ -22,7 +22,7 @@ public class TCPClient {
 		
 		ch = getFile(i, o, list);
 		
-		FileOutputStream fout = new FileOutputStream("F:/Download/" + list[ch-1]);
+		FileOutputStream fout = new FileOutputStream("/Users/emilyelmseld/Downloads/" + list[ch-1]);
 		try {
 			System.out.println("Transferring File: " + list[ch-1] + "\n\n");
 			do {
@@ -39,7 +39,7 @@ public class TCPClient {
 		
 		Scanner src = new Scanner(System.in);
 		int i = 0, ch = 0;
-		System.out.println("file-list from Server \n\n");
+		System.out.println("file-list from Server \n");
 		ch = din.read();
 		
 		for(i = 0; i < ch; i++) {
@@ -47,7 +47,7 @@ public class TCPClient {
 			System.out.println((i+1) + "." + flist[i]);
 		}
 		
-		System.out.println("Enter File to be Requested");
+		System.out.println("Enter Filenummer to be Requested");
 		ch = src.nextInt();
 		dout.writeUTF(flist[(ch-1)]);
 		dout.flush();
