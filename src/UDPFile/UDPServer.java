@@ -1,15 +1,34 @@
 package UDPFile;
+
+import java.io.*;
+import java.net.*;
+
 /**
  * @author Emily Elmseld 28 apr 2015
  *
  */
 public class UDPServer {
 
-	/**
-	 * 
-	 */
-	public UDPServer() {
-		// TODO Auto-generated constructor stub
-	}
+	  public static void main(String[] args) throws Exception {
+		    int PORT = 4000;
+		    byte[] buf = new byte[1000];
+		    DatagramPacket dgp = new DatagramPacket(buf, buf.length);
+		    DatagramSocket sk;
+
+		    sk = new DatagramSocket(PORT);
+		    System.out.println("Server started");
+		    while (true) {
+		      sk.receive(dgp);
+		      String rcvd = new String(dgp.getData(), 0, dgp.getLength()) + ", from address: "
+		          + dgp.getAddress() + ", port: " + dgp.getPort();
+		      System.out.println(rcvd);
+		      
+		      BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+		      String outMessage = stdin.readLine();
+		      buf = ("Server say: " + outMessage).getBytes();
+		      DatagramPacket out = new DatagramPacket(buf, buf.length, dgp.getAddress(), dgp.getPort());
+		      sk.send(out);
+		    }
+		  }
 
 }

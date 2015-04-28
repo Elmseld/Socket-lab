@@ -1,4 +1,8 @@
 package UDPFile;
+
+import java.io.*;
+import java.net.*;
+
 /**
  * 
  */
@@ -8,12 +12,30 @@ package UDPFile;
  *
  */
 public class UDPClient {
+	
+	  public static void main(String[] args) throws Exception {
+		    DatagramSocket s = new DatagramSocket();
+		    byte[] buf = new byte[1000];
+		    DatagramPacket dp = new DatagramPacket(buf, buf.length);
 
-	/**
-	 * 
-	 */
-	public UDPClient() {
-		// TODO Auto-generated constructor stub
-	}
+		    InetAddress hostAddress = InetAddress.getByName("localhost");
+		    while (true) {
+		      BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+		      String outMessage = stdin.readLine();
+
+		      if (outMessage.equals("bye"))
+		        break;
+		      String outString = "Client say: " + outMessage;
+		      buf = outString.getBytes();
+
+		      DatagramPacket out = new DatagramPacket(buf, buf.length, hostAddress, 9999);
+		      s.send(out);
+
+		      s.receive(dp);
+		      String rcvd = "rcvd from " + dp.getAddress() + ", " + dp.getPort() + ": "
+		          + new String(dp.getData(), 0, dp.getLength());
+		      System.out.println(rcvd);
+		    }
+		  }
 
 }
