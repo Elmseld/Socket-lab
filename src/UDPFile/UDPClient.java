@@ -18,7 +18,7 @@ public class UDPClient {
 		  DatagramSocket ds = new DatagramSocket(2000);
 		  DatagramPacket dp = new DatagramPacket(b, b.length);
 
-		  FileOutputStream fos = new FileOutputStream(new File("/Users/emilyelmseld/Downloads/"));
+		  FileOutputStream fos = new FileOutputStream(new File("/Users/emilyelmseld/Downloads/ny2.py/"));
 		  ds.receive(dp);
 		  byte[] b1 = new byte[dp.getLength()];
 		  fos.write(b, 0, b1.length);
