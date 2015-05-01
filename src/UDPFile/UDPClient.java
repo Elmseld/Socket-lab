@@ -2,6 +2,7 @@ package UDPFile;
 
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 /**
  * 
@@ -13,16 +14,48 @@ import java.net.*;
  */
 public class UDPClient {
 	
-	  public static void main(String[] args) throws IOException, SocketException {
-		  byte[] b = new byte[3000];
-		  DatagramSocket ds = new DatagramSocket(2000);
-		  DatagramPacket dp = new DatagramPacket(b, b.length);
-
-		  FileOutputStream fos = new FileOutputStream(new File("/Users/emilyelmseld/Downloads/ny2.py/"));
-		  ds.receive(dp);
-		  byte[] b1 = new byte[dp.getLength()];
-		  fos.write(b, 0, b1.length);
+	  public static void main(String[] args) {
+		  DatagramSocket socket = null;
+		  int port = 12000;
+		  String s;
 		  
+		  BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
+		  
+		  try {
+			  socket = new DatagramSocket();
+			  
+			  InetAddress host = InetAddress.getByName("192.168.1.15");
+			  
+			  while(true) {
+				  //take input and send the packet
+				  echo("Enter message to send : ");
+				  s = (String)cin.readLine();
+				  byte[] b = s.getBytes();
+				  
+				  DatagramPacket dp = new DatagramPacket(b, b.length, host, port);
+				  socket.send(dp);
+				  
+				  //now receive reply
+				  //buffer to receive incoming data
+				  byte[] buffer = new byte[65536];
+				  DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+				  socket.receive(reply);
+				  
+				  byte[] data = reply.getData();
+				  s = new String(data, 0 , reply.getLength());
+				  
+				  //echo the details of incoming data - client ip : client port - client message
+				  echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - " + s);
+			  }
 		  }
+		  catch(IOException e) {
+			  System.err.println("IOException " + e);
+		  }
+		  
+	}
 
+	  //simple function to echo data to terminal
+	  public static void echo(String msg) {
+		  System.out.println(msg);
+	  }
 }

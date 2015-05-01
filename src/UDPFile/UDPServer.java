@@ -9,16 +9,42 @@ import java.net.*;
  */
 public class UDPServer {
 
-	public static void main(String args[]) throws IOException, SocketException {
-		DataInputStream dis = new DataInputStream(System.in);
-		File file = new File("/Users/emilyelmseld/Documents/fil-lista/tidsplan-emily.elmseld.pdf/");
-		FileInputStream fis = new FileInputStream(file);
-		byte[] b = new byte[(int)file.length()];
-		fis.read(b,0, b.length);
-		DatagramSocket ds = new DatagramSocket(2000);
-		DatagramPacket dp = new DatagramPacket(b, b.length, InetAddress.getByName("192.168.1.15"),2000);
-		ds.send(dp);
+	public static void main(String args[]) {
+	
+		DatagramSocket socket = null;
 		
+		try
+		{
+			//1. Creating a server socket, parameter is local port number
+			socket = new DatagramSocket(12000);
+			
+			//buffer to receive incoming data
+			byte[] buffer = new byte[65536];
+			DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
+			
+			//2. Wait for an incoming data
+			echo("Server socket created. Waiting for incoming data...");
+			
+			//communication loop
+			while(true) {
+				socket.receive(incoming);
+				byte[] data = incoming.getData();
+				String s = new String(data, 0, incoming.getLength());
+				
+				//echo the details of incoming data - client ip : clinet port - client message
+				echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
+				
+				s = "OK : " + s;
+				DatagramPacket dp = new DatagramPacket(s.getBytes(), s.getBytes().length, incoming.getAddress(), incoming.getPort());
+				socket.send(dp);
+			}
+		}
+		catch(IOException e) {
+			System.err.println("IOExcetion" + e);
+		}
 	}
-
+	//Simple function to echo data to terminal
+	public static void echo(String msg) {
+		System.out.println(msg);
+	}
 }
