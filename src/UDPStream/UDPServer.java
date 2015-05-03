@@ -36,10 +36,11 @@ public class UDPServer {
 	                                 "Alea iacta est", 
 	                                 "Tärningen är kastad",
 	                                 "Et tu Brute", 
-	                                 "Även du, min käre Brutus" };
+	                                 "Även du, min käre Brutus"
+	                                 };
 	        try {
 	            Thread.sleep( 5000 ); // vänta 5 sek med att starta sändningen
 	        } catch ( InterruptedException e ) {}
-	        UDPServer.send( "192.168.1.8", 4444, meddelanden );
+	        UDPServer.send( "192.168.1.7", 4444, meddelanden );
 	    }
 	}
