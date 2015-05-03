@@ -17,6 +17,7 @@ public class UDPServer {
 		{
 			//1. Creating a server socket, parameter is local port number
 			socket = new DatagramSocket(12000);
+			File file = new File("/Users/emilyelmseld/Documents/fil-lista/tidsplan-emily.elmseld.pdf/");
 			
 			//buffer to receive incoming data
 			byte[] buffer = new byte[65536];
@@ -34,8 +35,11 @@ public class UDPServer {
 				//echo the details of incoming data - client ip : clinet port - client message
 				echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
 				
-				s = "OK : " + s;
-				DatagramPacket dp = new DatagramPacket(s.getBytes(), s.getBytes().length, incoming.getAddress(), incoming.getPort());
+				byte[] mybytearray = new byte[(int) file.length()];
+			      BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+			      bis.read(mybytearray, 0, mybytearray.length);
+				
+				DatagramPacket dp = new DatagramPacket(mybytearray, mybytearray.length, incoming.getAddress(), incoming.getPort());
 				socket.send(dp);
 			}
 		}
