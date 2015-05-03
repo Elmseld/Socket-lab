@@ -19,20 +19,17 @@ public class UDPClient {
 		  DatagramSocket socket = null;
 		  int port = 12000;
 		  String s;
+		  byte[] b = new byte[256];
+
 		  
-		  BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
+//		  BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
 		  
 		  try {
 			  socket = new DatagramSocket();
 			  
-			  InetAddress host = InetAddress.getByName("192.168.1.15");
+			  InetAddress host = InetAddress.getByName("192.168.1.9");
 			  
 			  while(true) {
-				  //take input and send the packet
-				  echo("Enter message to send : ");
-				  s = (String)cin.readLine();
-				  byte[] b = s.getBytes();
-				  
 				  DatagramPacket dp = new DatagramPacket(b, b.length, host, port);
 				  socket.send(dp);
 				  
@@ -53,7 +50,10 @@ public class UDPClient {
 
 				    
 				  //echo the details of incoming data - client ip : client port - client message
-				  echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - färdig");
+				  System.out.println(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - färdig");
+				  //För att avbryta mottagningen av filer.
+				  socket.close();
+
 			  }
 		  }
 		  catch(IOException e) {
@@ -61,11 +61,6 @@ public class UDPClient {
 		  }
 		  
 	}
-
-	  //simple function to echo data to terminal
-	  public static void echo(String msg) {
-		  System.out.println(msg);
-	  }
 
 
 public static int randInt(int min, int max) {
