@@ -26,7 +26,7 @@ import java.io.*;
 	            packet = new DatagramPacket( data, data.length );
 	            socket.receive( packet );
 	            message=new String(packet.getData(),0,packet.getLength(),"ISO-8859-1");
-	            System.out.println( packet.getAddress().toString() + ": " + message + " : byte " + message.length()); // Skriver ut meddelandet
+	            System.out.println( packet.getAddress().toString() + ": " + message + " : " + message.length() + " bytes"); // Skriver ut meddelandet
 	         }
 	      } catch(IOException e) {
 	         System.out.println( e );

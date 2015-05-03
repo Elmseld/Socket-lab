@@ -21,7 +21,9 @@ public class TCPClient {
             String message;
             while( true ) {
                 message = input.readUTF(); // här väntar tråden
-                System.out.println( message );
+	            System.out.println( serverIP.toString() + ": " + message + " : " + message.length() + " bytes"); // Skriver ut meddelandet
+
+                
             }
         } catch(IOException e) {
             System.out.println( e );
