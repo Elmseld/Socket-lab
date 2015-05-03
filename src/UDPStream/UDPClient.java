@@ -21,7 +21,7 @@ import java.io.*;
 	         DatagramSocket socket = new DatagramSocket( port );
 	         DatagramPacket packet;
 	         String message;
-	         byte[] data = new byte[ 256 ];
+	         byte[] data = new byte[ 65536 ];
 	         while( true ) {
 	            packet = new DatagramPacket( data, data.length );
 	            socket.receive( packet );
