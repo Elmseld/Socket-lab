@@ -46,8 +46,7 @@ public class TCPServer {
 		for(File listOfFile : listOfFiles)
 			
 		//listFiles() returnera både filer och mappar så nästa rad är för att bara få fram filer
-		if(listOfFile.isFile())
-		{
+		if(listOfFile.isFile()) {
 			p++;
 		}
 		dout.write(p);
