@@ -8,50 +8,83 @@ import java.util.*;
 
 /**
  * @author Emily Elmseld 28 apr 2015
- *
+ * Klassen connectar till en server och tar emot en 
+ * fil från servern och sparar filen på klientens dator
  */
 public class TCPClient {
 
 	public static void main(String args[]) throws IOException {
+		// Skapar en ny array list[] av typen String med längden 20
 		String list[] = new String[20];
-		int p = 0, ch;
+		//Skapar en variabel antal av typen int
+		int tal;
+		// Skapar en ny Socket som ges ip-nummret till server och portnr 12000
 		Socket s = new Socket(InetAddress.getByName("192.168.1.15"), 12000);
+		// Skriver ut Client connected to Server at + socketen i terminalen
 		System.out.println("Client connected to Server at" + s);
-		DataInputStream i = new DataInputStream(s.getInputStream());
-		DataOutputStream o = new DataOutputStream(s.getOutputStream());
+		// Skapar en ny DataInputStream men variabelnamnet dis med en referens som hämtar InputStream från socketen 
+		DataInputStream dis = new DataInputStream(s.getInputStream());
+		// Skapar en ny DataOutputStream men variabelnamnet dos med en referens som hämtar OutputStream från socketen 
+		DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 		
-		ch = getFile(i, o, list);
+		// lägger in informationen från metoden getFile i inten tal
+		tal = getFile(dis, dos, list);
 		
-		FileOutputStream fout = new FileOutputStream("/Users/emilyelmseld/Downloads/" + list[ch-1]);
+		// Skapar en FileOutputStream med variabelnamnet fout som skapar en ny fil i /Users/emilyelmseld/Downloads/ + filnamnet från servern
+		FileOutputStream fout = new FileOutputStream("/Users/emilyelmseld/Downloads/" + list[tal-1]);
 		try {
-			System.out.println("Transferring File: " + list[ch-1] + "\n\n");
+			//Skriver ut Transferring File: + filnamnet i terminalen
+			System.out.println("Transferring File: " + list[tal-1] + "\n\n");
+			//En do-while-loop som lägger in datan från servern i den nya filen
 			do {
-				ch = i.read();
-				fout.write(ch);
-			}while(ch!=-1);
-		}catch(SocketException e) { //Exception indicates File transfer complete.
+				//läser in datan från DataInputstream
+				tal = dis.read();
+				//Skriver ut datan till den nya filen
+				fout.write(tal);
+			}while(tal!=-1);
+		// exception indikerar att Filen är nedladdad.
+		}catch(SocketException e) {
 			System.out.println("File tranfer complete");
 			
 		}
 	}
 	
+	/**
+	 * Metod som hämtar och skriver ut en fillista från servern som man kan välja från för att ladda ned filer från servern
+	 * @param din DataInputStream
+	 * @param dout DataOutputStream
+	 * @param flist String, fillistan med filerna från servern
+	 * @return returnerar filnumret som anges i terminalen
+	 * @throws IOException kastar exceptions vid fel i parametrarna
+	 */
 	public static int getFile(DataInputStream din, DataOutputStream dout, String flist[]) throws IOException {
 		
 		Scanner src = new Scanner(System.in);
-		int i = 0, ch = 0;
+		// Skapar två intar i och tal med värdet 0.
+		int i = 0, tal = 0;
+		// Skriver ut file-list from Server i terminalen
 		System.out.println("file-list from Server \n");
-		ch = din.read();
+		// Lägger in InputStreamens data i byte i variabeln tal
+		tal = din.read();
 		
-		for(i = 0; i < ch; i++) {
+		//For-loop som skriver ut fillistan rad för rad i terminalen
+		for(i = 0; i < tal; i++) {
 			flist[i] = din.readUTF();
 			System.out.println((i+1) + "." + flist[i]);
 		}
 		
+		//Skriver ut Enter Filenummer to be Requested i terminalen 
 		System.out.println("Enter Filenummer to be Requested");
-		ch = src.nextInt();
-		dout.writeUTF(flist[(ch-1)]);
+		// Lägger in talet som angavs i terminalen i variablen tal
+		tal = src.nextInt();
+		// lägger in sträng-namnet från den valda filen i DataOutputStreamen 
+		dout.writeUTF(flist[(tal-1)]);
+		// tvingar bruffrande data ut i output strömen.
 		dout.flush();
-		return (ch);
+		// Stänger möjligheten att skriva i terminalen
+		src.close();
+		// returnerar talet som avgavs
+		return (tal);
 	}
 	
 }
