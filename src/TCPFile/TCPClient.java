@@ -19,7 +19,7 @@ public class TCPClient {
 		//Skapar en variabel antal av typen int
 		int tal;
 		// Skapar en ny Socket som ges ip-nummret till server och portnr 12000
-		Socket s = new Socket(InetAddress.getByName("192.168.1.15"), 12000);
+		Socket s = new Socket(InetAddress.getByName("192.168.1.9"), 12000);
 		// Skriver ut Client connected to Server at + socketen i terminalen
 		System.out.println("Client connected to Server at" + s);
 		// Skapar en ny DataInputStream men variabelnamnet dis med en referens som hämtar InputStream från socketen 
