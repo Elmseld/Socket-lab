@@ -42,9 +42,9 @@ public class TCPClient {
 				//Skriver ut datan till den nya filen
 				fout.write(tal);
 			}while(tal!=-1);
-		// exception indikerar att Filen är nedladdad.
-		}catch(SocketException e) {
+		// Skriver ut meddelande File tranfer complete när while == false och filen är nedladdad.
 			System.out.println("File tranfer complete");
+		}catch(SocketException e) {
 			
 		}
 	}
@@ -58,6 +58,7 @@ public class TCPClient {
 	 * @throws IOException kastar exceptions vid fel i parametrarna
 	 */
 	public static int getFile(DataInputStream din, DataOutputStream dout, String flist[]) throws IOException {
+		
 		
 		Scanner src = new Scanner(System.in);
 		// Skapar två intar i och tal med värdet 0.
@@ -73,6 +74,7 @@ public class TCPClient {
 			System.out.println((i+1) + "." + flist[i]);
 		}
 		
+		
 		//Skriver ut Enter Filenummer to be Requested i terminalen 
 		System.out.println("Enter Filenummer to be Requested");
 		// Lägger in talet som angavs i terminalen i variablen tal
@@ -85,6 +87,7 @@ public class TCPClient {
 		src.close();
 		// returnerar talet som avgavs
 		return (tal);
+		
 	}
 	
 }
